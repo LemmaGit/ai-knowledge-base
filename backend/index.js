@@ -14,7 +14,7 @@ mongoose
 
 const httpServer = http.createServer(app);
 const server = httpServer.listen(config.port, () => {
-  logger.info(`server listening on port ${config.port}`);
+  logger.info(`Server listening on port ${config.port}`);
 });
 const exitHandler = () => {
   if (server) {
