@@ -1,23 +1,22 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
-const { status } = require("http-status");
 const { sendEmail } = require("./../utils/email");
 const { User } = require("../models");
+const { tokenService } = require(".");
+const { tokenTypes } = require("../config/tokens");
 
 const getUserByEmail = async (email) => {
-  try {
-    const user = await User.findOne({ email });
-    return user;
-  } catch (err) {
-    throw new Error(err.message || "Something went wrong");
-  }
+  return await User.findOne({ email });
+};
+
+const getUserById = async (id) => {
+  return await User.findById(id);
 };
 
 const signup = async (data) => {
   const { name, email, password } = data;
   const hashedPassword = await bcrypt.hash(password, 10);
-
   const verificationToken = crypto.randomBytes(32).toString("hex");
 
   const user = await User.create({
@@ -27,7 +26,6 @@ const signup = async (data) => {
     verificationToken,
   });
 
-  // Send verification email
   await sendEmail(email, verificationToken);
   return user;
 };
@@ -47,17 +45,31 @@ const login = async (userCredentials) => {
   const user = await getUserByEmail(email);
   const isMatch = await bcrypt.compare(password, user.password);
 
-  const token = jwt.sign(
-    { id: user._id, role: user.role },
-    process.env.JWT_SECRET,
-    { expiresIn: "7d" }
-  );
-  return { user, isMatch, token };
+  const tokens = await tokenService.generateAuthTokens(user._id);
+
+  return { user, isMatch, tokens };
+};
+
+const refreshAuthToken = async (refreshToken) => {
+  try {
+    const refreshTokenDoc = await tokenService.verifyToken(
+      refreshToken,
+      tokenTypes.REFRESH
+    );
+    const user = await userService.getUserById(refreshTokenDoc.user);
+    if (!user) throw new Error();
+    await refreshTokenDoc.deleteOne();
+    return tokenService.generateAuthTokens(user.id);
+  } catch (err) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, "Please authenticate");
+  }
 };
 
 module.exports = {
   signup,
   verifyEmail,
   login,
+  refreshAuthToken,
   getUserByEmail,
+  getUserById,
 };

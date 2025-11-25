@@ -23,7 +23,7 @@ const verifyEmail = catchAsync(async (req, res) => {
 });
 
 const login = catchAsync(async (req, res) => {
-  const { user, isMatch, token } = await authService.login(req.body);
+  const { user, isMatch, tokens } = await authService.login(req.body);
   if (!user)
     return res.status(status.NOT_FOUND).json({ error: "User not found" });
 
@@ -37,11 +37,17 @@ const login = catchAsync(async (req, res) => {
       .status(status.UNAUTHORIZED)
       .json({ error: "Invalid email & password" });
 
-  res.status(status.OK).json({ token });
+  res.status(status.OK).json({ user, tokens });
+});
+
+const refreshAuthToken = catchAsync(async (req, res) => {
+  const tokens = await authService.refreshAuthToken(req.body.refreshToken);
+  res.status(httpStatus.OK).send({ ...tokens });
 });
 
 module.exports = {
   signup,
   login,
   verifyEmail,
+  refreshAuthToken,
 };

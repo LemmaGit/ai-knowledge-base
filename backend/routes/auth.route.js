@@ -15,5 +15,10 @@ router.post(
   authController.login
 );
 router.get("/verify-email", authController.verifyEmail);
+router.post(
+  "/auth/refresh-token",
+  validate(authValidation.refreshTokenSchema),
+  authController.refreshAuthToken
+);
 
 module.exports = router;
