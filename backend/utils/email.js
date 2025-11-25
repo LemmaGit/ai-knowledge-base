@@ -3,8 +3,6 @@ const pug = require("pug");
 const path = require("path");
 const { emailInfo, frontendURL } = require("../config/config");
 
-const __dirname = path.resolve();
-
 exports.sendEmail = async (to, token) => {
   try {
     const transporter = nodemailer.createTransport({

@@ -2,6 +2,7 @@
   "scripts": {
     "start": "nodemon index.js"
   },
+  "type": "commonjs",
   "dependencies": {
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.5",
