@@ -4,7 +4,6 @@ const { value: envVars, error } = envValidation.validate(process.env);
 if (error) {
   console.error(error);
 }
-
 module.exports = {
   port: envVars.PORT,
   dbConnection: envVars.DB_CONNECTION,

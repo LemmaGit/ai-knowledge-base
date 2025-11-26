@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 const { sendEmail } = require("./../utils/email");
 const { User } = require("../models");
-const { tokenService } = require(".");
+const { tokenService } = require("./token.service");
 const { tokenTypes } = require("../config/tokens");
 
 const getUserByEmail = async (email) => {
@@ -25,8 +25,12 @@ const signup = async (data) => {
     password: hashedPassword,
     verificationToken,
   });
-
-  await sendEmail(email, verificationToken);
+  try {
+    await sendEmail(user.name, user.email, verificationToken);
+  } catch (err) {
+    await user.deleteOne();
+    throw new Error(err.message || "Something went wrong");
+  }
   return user;
 };
 

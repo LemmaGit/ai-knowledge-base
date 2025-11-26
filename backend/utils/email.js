@@ -1,10 +1,9 @@
 const nodemailer = require("nodemailer");
 const pug = require("pug");
 const path = require("path");
-const { emailInfo, frontendURL } = require("../config/config");
-
-exports.sendEmail = async (to, token) => {
+exports.sendEmail = async (username, to, token) => {
   try {
+    const { emailInfo, frontendURL } = require("./../config/config");
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -19,7 +18,11 @@ exports.sendEmail = async (to, token) => {
       "../views/verification-email.pug"
     );
 
-    const html = pug.renderFile(templatePath, { to, verificationUrl });
+    const html = pug.renderFile(templatePath, {
+      username,
+      to,
+      verificationUrl,
+    });
 
     const mailOptions = {
       from: emailInfo.username,
@@ -31,6 +34,6 @@ exports.sendEmail = async (to, token) => {
     await transporter.sendMail(mailOptions);
     console.log(`Verification email sent to ${to}`);
   } catch (error) {
-    console.error("Error sending email:", error);
+    throw new Error("Unable to send mail.");
   }
 };

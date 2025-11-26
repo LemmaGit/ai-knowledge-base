@@ -3,11 +3,12 @@ const { getUserByEmail } = require("../services/auth.service");
 
 const baseSchema = {
   body: joi.object().keys({
-    password: joi.string().required(),
+    password: joi.string().min(8).required(),
   }),
 };
 const signupSchema = {
   body: baseSchema.body.keys({
+    name: joi.string().required(),
     email: joi
       .string()
       .email()
@@ -18,6 +19,7 @@ const signupSchema = {
         return email;
       }),
   }),
+  role: joi.string().valid("user", "admin").default("user"),
 };
 const loginSchema = {
   body: baseSchema.body.keys({

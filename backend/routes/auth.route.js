@@ -2,11 +2,11 @@ const express = require("express");
 const router = express.Router();
 const { authValidation } = require("./../validations");
 const { authController } = require("./../controllers");
-const validate = require("./../middlewares/validate");
+const { validate, validateAsync } = require("./../middlewares/validate");
 
 router.post(
   "/signup",
-  validate(authValidation.signupSchema),
+  validateAsync(authValidation.signupSchema),
   authController.signup
 );
 router.post(
