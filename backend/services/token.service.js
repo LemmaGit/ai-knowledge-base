@@ -3,7 +3,8 @@ const dayjs = require("dayjs");
 const Token = require("./../models/token.model");
 const config = require("./../config/config");
 const { tokenTypes } = require("./../config/tokens");
-
+console.log("token.service.js loaded");
+// console.log("🤑🤑", config);
 const saveToken = async (token, userId, expires, type, blacklisted = false) => {
   return await Token.create({
     token,

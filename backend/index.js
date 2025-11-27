@@ -1,6 +1,6 @@
+const config = require("./config/config");
 const mongoose = require("mongoose");
 const http = require("http");
-const config = require("./config/config");
 const app = require("./server");
 const logger = require("./config/logger");
 mongoose

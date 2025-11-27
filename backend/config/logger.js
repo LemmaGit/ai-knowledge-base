@@ -14,4 +14,5 @@ const logger = createLogger({
   ),
   transports: [new transports.Console()],
 });
+console.log("Logger Initialized");
 module.exports = logger;

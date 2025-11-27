@@ -1,9 +1,8 @@
-const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 const { sendEmail } = require("./../utils/email");
 const { User } = require("../models");
-const { tokenService } = require("./token.service");
+const tokenService = require("./token.service");
 const { tokenTypes } = require("../config/tokens");
 
 const getUserByEmail = async (email) => {

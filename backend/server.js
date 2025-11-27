@@ -15,5 +15,5 @@ app.use((req, res, next) => {
 });
 app.use(errorConverter);
 app.use(errorHandler);
-
+console.log("Server Loaded");
 module.exports = app;
