@@ -1,52 +1,109 @@
-import { useState } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Toaster } from 'react-hot-toast';
+import { AuthProvider } from './contexts/AuthContext';
+import { ThemeProvider } from './contexts/ThemeContext';
+import ProtectedRoute from './components/ProtectedRoute';
+
+// Pages
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import VerifyEmail from './pages/VerifyEmail';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
+import Dashboard from './pages/Dashboard';
+import Articles from './pages/Articles';
+import ArticleDetail from './pages/ArticleDetail';
+import CreateArticle from './pages/CreateArticle';
+import EditArticle from './pages/EditArticle';
+import MyArticles from './pages/MyArticles';
+import Profile from './pages/Profile';
+import Settings from './pages/Settings';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
+    },
+  },
+});
 
 function App() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const toggelTheme = () => {
-    setIsDarkMode(!isDarkMode);
-    if (!isDarkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  };
   return (
-    <div className="h-dvh flex justify-center items-center gap-4 bg-primaryy dark:bg-dark transition-colors duration-500 p-4">
-      {/* <button
-        onClick={toggelTheme}
-        type="button"
-        className="h-fit border  py-2 px-4 rounded-lg text-sm cursor-pointer hover:bg-orange-600 bg-orange-500 text-dark dark:text-primaryy"
-      >
-        Change Theme
-      </button> */}
-      <button
-        onClick={toggelTheme}
-        type="button"
-        className={`btn btn-lg ${isDarkMode ? "btn-primary" : "btn-secondary"}`}
-      >
-        Change Theme
-      </button>
-      <button
-        className={`btn btn-lg ${isDarkMode ? "btn-primary" : "btn-secondary"}`}
-        type="button"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth="2.5"
-          stroke="currentColor"
-          className="size-[1.2em]"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
-          />
-        </svg>
-        Like
-      </button>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
+        <AuthProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/verify-email" element={<VerifyEmail />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
+              <Route path="/articles" element={<Articles />} />
+              <Route path="/articles/:id" element={<ArticleDetail />} />
+              
+              {/* Protected Routes */}
+              <Route
+                path="/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard/create-article"
+                element={
+                  <ProtectedRoute>
+                    <CreateArticle />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard/edit-article/:id"
+                element={
+                  <ProtectedRoute>
+                    <EditArticle />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard/my-articles"
+                element={
+                  <ProtectedRoute>
+                    <MyArticles />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard/profile"
+                element={
+                  <ProtectedRoute>
+                    <Profile />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard/settings"
+                element={
+                  <ProtectedRoute>
+                    <Settings />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* Catch all */}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+            <Toaster position="top-right" />
+          </BrowserRouter>
+        </AuthProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }
 
