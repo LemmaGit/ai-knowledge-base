@@ -7,7 +7,7 @@ const createArticle = catchAsync(async (req, res) => {
     ...req.body,
     author: req.user.id,
   });
-  res.status(httpStatus.CREATED).json(article);
+  res.status(status.CREATED).json(article);
 });
 
 const getArticles = catchAsync(async (req, res) => {
@@ -33,9 +33,9 @@ const deleteArticle = catchAsync(async (req, res) => {
   const article = await articleService.deleteArticle(req.params.id);
   if (!article)
     return res
-      .status(httpStatus.NOT_FOUND)
+      .status(status.NOT_FOUND)
       .json({ error: "Article not found" });
-  res.status(httpStatus.OK).json({ message: "Article deleted" });
+  res.status(status.OK).json({ message: "Article deleted" });
 });
 
 module.exports = {

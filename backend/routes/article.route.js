@@ -6,12 +6,9 @@ const { validate } = require("./../middlewares/validate");
 // const auth = require("./../middlewares/auth");
 
 router.get("/", articleController.getArticles);
-router.post("/", validate(articleValidation), articleController.createArticle);
-// router.post(
-//   "/",
-//   auth,
-//   validate(blogValidation.createBlogSchema),
-//   blogController.createBlog
-// );
+router.get("/:id", articleController.getArticleById);
+router.post("/", validate(articleValidation.createArticleSchema), articleController.createArticle);
+router.put("/:id", validate(articleValidation.createArticleSchema), articleController.updateArticle);
+router.delete("/:id", articleController.deleteArticle);
 
 module.exports = router;
