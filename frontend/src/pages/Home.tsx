@@ -1,20 +1,20 @@
-import { Link } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import Layout from '../components/Layout';
-import { BookOpen, Search, Bot, FileText } from 'lucide-react';
+import { Link } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import Layout from "../components/Layout";
+import { BookOpen, Search, Bot } from "lucide-react";
 
 const Home = () => {
   const { isAuthenticated } = useAuth();
 
   return (
     <Layout>
-      <div className="hero min-h-[calc(100vh-200px)] bg-base-200">
+      <div className="hero min-h-[calc(100vh-200px)] bg-base-200 font-sans">
         <div className="hero-content text-center">
           <div className="max-w-2xl">
             <h1 className="text-5xl font-bold mb-6">
               AI Knowledge Base Platform
             </h1>
-            <p className="text-xl mb-8 text-base-content/70">
+            <p className="text-xl mb-8 text-base-content/70 font-inter">
               Discover, create, and share knowledge with AI-powered insights and
               intelligent search.
             </p>
@@ -85,4 +85,3 @@ const Home = () => {
 };
 
 export default Home;
-

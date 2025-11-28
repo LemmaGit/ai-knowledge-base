@@ -1,20 +1,20 @@
-import { Link } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { useSignup } from '../hooks/useAuth';
-import Layout from '../components/Layout';
+import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { useSignup } from "../hooks/useAuth";
+import Layout from "../components/Layout";
 
 const signupSchema = z
   .object({
-    name: z.string().min(2, 'Name must be at least 2 characters'),
-    email: z.string().email('Invalid email address'),
-    password: z.string().min(8, 'Password must be at least 8 characters'),
+    name: z.string().min(2, "Name must be at least 2 characters"),
+    email: z.string().email("Invalid email address"),
+    password: z.string().min(8, "Password must be at least 8 characters"),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
-    path: ['confirmPassword'],
+    path: ["confirmPassword"],
   });
 
 type SignupFormData = z.infer<typeof signupSchema>;
@@ -36,109 +36,160 @@ const Signup = () => {
 
   return (
     <Layout>
-      <div className="flex items-center justify-center min-h-[calc(100vh-200px)] py-12 px-4">
-        <div className="card w-full max-w-md bg-base-100 shadow-xl">
-          <div className="card-body">
-            <h2 className="card-title text-3xl justify-center mb-4">Sign Up</h2>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Name</span>
-                </label>
-                <input
-                  type="text"
-                  placeholder="Your name"
-                  className={`input input-bordered ${errors.name ? 'input-error' : ''}`}
-                  {...register('name')}
-                />
-                {errors.name && (
-                  <label className="label">
-                    <span className="label-text-alt text-error">
-                      {errors.name.message}
-                    </span>
-                  </label>
-                )}
-              </div>
+      <div className="min-h-[calc(100vh-200px)] flex items-center justify-center py-8 px-4">
+        <div className="w-full max-w-md">
+          {/* Header Section */}
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold text-base-content mb-2">
+              Create Account
+            </h1>
+            <p className="text-base-content/70">
+              Join us today and get started
+            </p>
+          </div>
 
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Email</span>
-                </label>
-                <input
-                  type="email"
-                  placeholder="email@example.com"
-                  className={`input input-bordered ${errors.email ? 'input-error' : ''}`}
-                  {...register('email')}
-                />
-                {errors.email && (
+          {/* Card Component */}
+          <div className="card bg-base-100 shadow-2xl border border-base-300">
+            <div className="card-body p-8">
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                {/* Name Field */}
+                <div className="form-control">
                   <label className="label">
-                    <span className="label-text-alt text-error">
-                      {errors.email.message}
-                    </span>
+                    <span className="label-text font-semibold">Full Name</span>
                   </label>
-                )}
-              </div>
-
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Password</span>
-                </label>
-                <input
-                  type="password"
-                  placeholder="Enter your password"
-                  className={`input input-bordered ${errors.password ? 'input-error' : ''}`}
-                  {...register('password')}
-                />
-                {errors.password && (
-                  <label className="label">
-                    <span className="label-text-alt text-error">
-                      {errors.password.message}
-                    </span>
-                  </label>
-                )}
-              </div>
-
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Confirm Password</span>
-                </label>
-                <input
-                  type="password"
-                  placeholder="Confirm your password"
-                  className={`input input-bordered ${errors.confirmPassword ? 'input-error' : ''}`}
-                  {...register('confirmPassword')}
-                />
-                {errors.confirmPassword && (
-                  <label className="label">
-                    <span className="label-text-alt text-error">
-                      {errors.confirmPassword.message}
-                    </span>
-                  </label>
-                )}
-              </div>
-
-              <div className="form-control mt-6">
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  disabled={signup.isPending}
-                >
-                  {signup.isPending ? (
-                    <span className="loading loading-spinner"></span>
-                  ) : (
-                    'Sign Up'
+                  <input
+                    type="text"
+                    placeholder="Enter your full name"
+                    className={`input input-bordered input-lg ${
+                      errors.name ? "input-error" : "input-primary"
+                    }`}
+                    {...register("name")}
+                  />
+                  {errors.name && (
+                    <label className="label">
+                      <span className="label-text-alt text-error font-medium">
+                        {errors.name.message}
+                      </span>
+                    </label>
                   )}
-                </button>
-              </div>
-            </form>
+                </div>
 
-            <div className="divider">OR</div>
+                {/* Email Field */}
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text font-semibold">
+                      Email Address
+                    </span>
+                  </label>
+                  <input
+                    type="email"
+                    placeholder="your.email@example.com"
+                    className={`input input-bordered input-lg ${
+                      errors.email ? "input-error" : "input-primary"
+                    }`}
+                    {...register("email")}
+                  />
+                  {errors.email && (
+                    <label className="label">
+                      <span className="label-text-alt text-error font-medium">
+                        {errors.email.message}
+                      </span>
+                    </label>
+                  )}
+                </div>
 
-            <p className="text-center text-sm">
-              Already have an account?{' '}
-              <Link to="/login" className="link link-primary">
-                Login
-              </Link>
+                {/* Password Field */}
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text font-semibold">Password</span>
+                  </label>
+                  <input
+                    type="password"
+                    placeholder="Create a strong password"
+                    className={`input input-bordered input-lg ${
+                      errors.password ? "input-error" : "input-primary"
+                    }`}
+                    {...register("password")}
+                  />
+                  {errors.password && (
+                    <label className="label">
+                      <span className="label-text-alt text-error font-medium">
+                        {errors.password.message}
+                      </span>
+                    </label>
+                  )}
+                </div>
+
+                {/* Confirm Password Field */}
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text font-semibold">
+                      Confirm Password
+                    </span>
+                  </label>
+                  <input
+                    type="password"
+                    placeholder="Re-enter your password"
+                    className={`input input-bordered input-lg ${
+                      errors.confirmPassword ? "input-error" : "input-primary"
+                    }`}
+                    {...register("confirmPassword")}
+                  />
+                  {errors.confirmPassword && (
+                    <label className="label">
+                      <span className="label-text-alt text-error font-medium">
+                        {errors.confirmPassword.message}
+                      </span>
+                    </label>
+                  )}
+                </div>
+
+                {/* Submit Button */}
+                <div className="form-control mt-2">
+                  <button
+                    type="submit"
+                    className="btn btn-primary btn-sm text-sm font-semibold"
+                    disabled={signup.isPending}
+                  >
+                    {signup.isPending ? (
+                      <>
+                        <span className="loading loading-spinner"></span>
+                        Creating Account...
+                      </>
+                    ) : (
+                      "Create Account"
+                    )}
+                  </button>
+                </div>
+              </form>
+
+              {/* Divider */}
+              <div className="divider text-base-content/50 my-6">OR</div>
+
+              {/* Login Link */}
+              <p className="text-center text-base">
+                Already have an account?{" "}
+                <Link
+                  to="/login"
+                  className="link link-primary font-semibold hover:link-hover transition-colors"
+                >
+                  Sign In
+                </Link>
+              </p>
+            </div>
+          </div>
+
+          {/* Terms Notice */}
+          <div className="text-center mt-6">
+            <p className="text-sm text-base-content/60">
+              By creating an account, you agree to our{" "}
+              <a href="#" className="link link-hover">
+                Terms of Service
+              </a>{" "}
+              and{" "}
+              <a href="#" className="link link-hover">
+                Privacy Policy
+              </a>
             </p>
           </div>
         </div>
@@ -148,4 +199,3 @@ const Signup = () => {
 };
 
 export default Signup;
-

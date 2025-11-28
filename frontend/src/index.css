@@ -1,11 +1,13 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
 @import "tailwindcss";
 @plugin "daisyui";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-primaryy: var(--color-white);
-  --color-dark: var(--color-gray-900);
+  --font-inter: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
 }
 @layer base {
   h1 {
@@ -23,6 +25,14 @@
   }
 }
 
+body {
+  @apply font-inter;
+}
+
+a {
+  @apply no-underline;
+  @apply text-current;
+}
 /* body {
   background: var(--color-red-300);
 } */
