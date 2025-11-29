@@ -30,8 +30,10 @@ const Signup = () => {
   });
 
   const onSubmit = (data: SignupFormData) => {
-    const { confirmPassword, ...signupData } = data;
-    signup.mutate(signupData);
+    delete data["confirmPassword"];
+    // const { confirmPassword, ...signupData } = data;
+    // signup.mutate(signupData);
+    signup.mutate(data);
   };
 
   return (
@@ -53,15 +55,15 @@ const Signup = () => {
             <div className="card-body p-8">
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 {/* Name Field */}
-                <div className="form-control">
+                <div className="form-control space-y-1">
                   <label className="label">
                     <span className="label-text font-semibold">Full Name</span>
                   </label>
                   <input
                     type="text"
                     placeholder="Enter your full name"
-                    className={`input input-bordered input-lg ${
-                      errors.name ? "input-error" : "input-primary"
+                    className={`input input-bordered input-md ${
+                      errors.name ? "input-error" : "focus:input-primary"
                     }`}
                     {...register("name")}
                   />
@@ -75,7 +77,7 @@ const Signup = () => {
                 </div>
 
                 {/* Email Field */}
-                <div className="form-control">
+                <div className="form-control space-y-1">
                   <label className="label">
                     <span className="label-text font-semibold">
                       Email Address
@@ -84,8 +86,8 @@ const Signup = () => {
                   <input
                     type="email"
                     placeholder="your.email@example.com"
-                    className={`input input-bordered input-lg ${
-                      errors.email ? "input-error" : "input-primary"
+                    className={`input input-bordered input-md ${
+                      errors.email ? "input-error" : "focus:input-primary"
                     }`}
                     {...register("email")}
                   />
@@ -99,15 +101,15 @@ const Signup = () => {
                 </div>
 
                 {/* Password Field */}
-                <div className="form-control">
-                  <label className="label">
+                <div className="form-control space-y-1">
+                  <label className="label mt-1">
                     <span className="label-text font-semibold">Password</span>
                   </label>
                   <input
                     type="password"
                     placeholder="Create a strong password"
-                    className={`input input-bordered input-lg ${
-                      errors.password ? "input-error" : "input-primary"
+                    className={`input input-bordered input-md ${
+                      errors.password ? "input-error" : "focus:input-primary"
                     }`}
                     {...register("password")}
                   />
@@ -121,8 +123,8 @@ const Signup = () => {
                 </div>
 
                 {/* Confirm Password Field */}
-                <div className="form-control">
-                  <label className="label">
+                <div className="form-control space-y-1">
+                  <label className="label mt-1">
                     <span className="label-text font-semibold">
                       Confirm Password
                     </span>
@@ -130,8 +132,10 @@ const Signup = () => {
                   <input
                     type="password"
                     placeholder="Re-enter your password"
-                    className={`input input-bordered input-lg ${
-                      errors.confirmPassword ? "input-error" : "input-primary"
+                    className={`input input-bordered input-md ${
+                      errors.confirmPassword
+                        ? "input-error"
+                        : "focus:input-primary"
                     }`}
                     {...register("confirmPassword")}
                   />
@@ -167,7 +171,7 @@ const Signup = () => {
               <div className="divider text-base-content/50 my-6">OR</div>
 
               {/* Login Link */}
-              <p className="text-center text-base">
+              <p className="text-center text-sm sm:text-base">
                 Already have an account?{" "}
                 <Link
                   to="/login"

@@ -45,7 +45,7 @@ const Login = () => {
             <div className="card-body p-8">
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 {/* Email Field */}
-                <div className="form-control">
+                <div className="form-control space-y-1">
                   <label className="label">
                     <span className="label-text font-semibold">
                       Email Address
@@ -54,8 +54,8 @@ const Login = () => {
                   <input
                     type="email"
                     placeholder="your.email@example.com"
-                    className={`input input-bordered input-lg ${
-                      errors.email ? "input-error" : "input-primary"
+                    className={`input --input-bordered input-md ${
+                      errors.email ? "input-error" : "focus:input-primary"
                     }`}
                     {...register("email")}
                   />
@@ -69,15 +69,15 @@ const Login = () => {
                 </div>
 
                 {/* Password Field */}
-                <div className="form-control">
+                <div className="form-control space-y-1">
                   <label className="label">
                     <span className="label-text font-semibold">Password</span>
                   </label>
                   <input
                     type="password"
                     placeholder="Enter your password"
-                    className={`input input-bordered input-lg ${
-                      errors.password ? "input-error" : "input-primary"
+                    className={`input --input-bordered input-md ${
+                      errors.password ? "input-error" : "focus:input-primary"
                     }`}
                     {...register("password")}
                   />
@@ -123,7 +123,7 @@ const Login = () => {
               <div className="divider text-base-content/50 my-6">OR</div>
 
               {/* Sign Up Link */}
-              <p className="text-center text-base">
+              <p className="text-center text-sm sm:text-base">
                 Don't have an account?{" "}
                 <Link
                   to="/signup"

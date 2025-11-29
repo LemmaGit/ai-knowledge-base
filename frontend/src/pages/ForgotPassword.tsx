@@ -1,14 +1,14 @@
-import { Link } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { useState } from 'react';
-import { toast } from 'react-hot-toast';
-import api from '../lib/api';
-import Layout from '../components/Layout';
+import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { useState } from "react";
+import { toast } from "react-hot-toast";
+import api from "../lib/api";
+import Layout from "../components/Layout";
 
 const forgotPasswordSchema = z.object({
-  email: z.string().email('Invalid email address'),
+  email: z.string().email("Invalid email address"),
 });
 
 type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
@@ -26,11 +26,11 @@ const ForgotPassword = () => {
   const onSubmit = async (data: ForgotPasswordFormData) => {
     try {
       // Assuming there's a forgot password endpoint
-      await api.post('/auth/forgot-password', data);
+      await api.post("/auth/forgot-password", data);
       setIsSubmitted(true);
-      toast.success('Password reset email sent!');
+      toast.success("Password reset email sent!");
     } catch (error: any) {
-      toast.error(error.response?.data?.error || 'Failed to send reset email');
+      toast.error(error.response?.data?.error || "Failed to send reset email");
     }
   };
 
@@ -73,7 +73,7 @@ const ForgotPassword = () => {
                   your password.
                 </p>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                  <div className="form-control">
+                  {/* <div className="form-control">
                     <label className="label">
                       <span className="label-text">Email</span>
                     </label>
@@ -90,6 +90,28 @@ const ForgotPassword = () => {
                         </span>
                       </label>
                     )}
+                  </div> */}
+                  <div className="form-control space-y-1">
+                    <label className="label">
+                      <span className="label-text font-semibold">
+                        Email Address
+                      </span>
+                    </label>
+                    <input
+                      type="email"
+                      placeholder="your.email@example.com"
+                      className={`input --input-bordered input-md ${
+                        errors.email ? "input-error" : "focus:input-primary"
+                      }`}
+                      {...register("email")}
+                    />
+                    {errors.email && (
+                      <label className="label">
+                        <span className="label-text-alt text-error font-medium">
+                          {errors.email.message}
+                        </span>
+                      </label>
+                    )}
                   </div>
 
                   <div className="form-control mt-6">
@@ -102,7 +124,7 @@ const ForgotPassword = () => {
                 <div className="divider"></div>
 
                 <p className="text-center text-sm">
-                  Remember your password?{' '}
+                  Remember your password?{" "}
                   <Link to="/login" className="link link-primary">
                     Login
                   </Link>
@@ -117,4 +139,3 @@ const ForgotPassword = () => {
 };
 
 export default ForgotPassword;
-
