@@ -1,8 +1,10 @@
-import { capitalize } from "./../utils/helpers.js";
+import type { FieldErrors, UseFormRegister } from "react-hook-form";
+import { capitalize } from "../utils/helpers.js";
+
 type FormFieldProps = {
   label: string;
-  errors: any;
-  register: (val: string) => any;
+  errors: FieldErrors<any>;
+  register: UseFormRegister<any>;
   registerName: string;
   inputType: string;
 };
@@ -21,7 +23,7 @@ const FormField = ({
       </label>
       <input
         type={inputType}
-        placeholder={`Enter your ${smallize(label)}`}
+        placeholder={`Enter your ${label.toLowerCase()}`}
         className={`input input-bordered input-md ${
           errors[registerName] ? "input-error" : "focus:input-primary"
         }`}
@@ -30,7 +32,7 @@ const FormField = ({
       {errors[registerName] && (
         <label className="label">
           <span className="label-text-alt text-error font-medium">
-            {errors[registerName].message}
+            {errors[registerName]?.message as string}
           </span>
         </label>
       )}

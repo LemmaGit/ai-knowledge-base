@@ -4,9 +4,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useLogin } from "../hooks/useAuth";
 import Layout from "../components/Layout";
+import FormField from "../components/Field";
 
 const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
+  email: z.email("Invalid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
 });
 
@@ -45,60 +46,22 @@ const Login = () => {
             <div className="card-body p-8">
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 {/* Email Field */}
-                <div className="form-control space-y-1">
-                  <label className="label">
-                    <span className="label-text font-semibold">
-                      Email Address
-                    </span>
-                  </label>
-                  <input
-                    type="email"
-                    placeholder="your.email@example.com"
-                    className={`input --input-bordered input-md ${
-                      errors.email ? "input-error" : "focus:input-primary"
-                    }`}
-                    {...register("email")}
-                  />
-                  {errors.email && (
-                    <label className="label">
-                      <span className="label-text-alt text-error font-medium">
-                        {errors.email.message}
-                      </span>
-                    </label>
-                  )}
-                </div>
+                <FormField
+                  label="Email Address"
+                  errors={errors}
+                  register={register}
+                  registerName="email"
+                  inputType="email"
+                />
 
                 {/* Password Field */}
-                <div className="form-control space-y-1">
-                  <label className="label">
-                    <span className="label-text font-semibold">Password</span>
-                  </label>
-                  <input
-                    type="password"
-                    placeholder="Enter your password"
-                    className={`input --input-bordered input-md ${
-                      errors.password ? "input-error" : "focus:input-primary"
-                    }`}
-                    {...register("password")}
-                  />
-                  {errors.password && (
-                    <label className="label">
-                      <span className="label-text-alt text-error font-medium">
-                        {errors.password.message}
-                      </span>
-                    </label>
-                  )}
-
-                  {/* Forgot Password Link */}
-                  <div className="label mt-2">
-                    <Link
-                      to="/forgot-password"
-                      className="label-text-alt link link-primary font-semibold hover:link-hover transition-colors ml-auto"
-                    >
-                      Forgot your password?
-                    </Link>
-                  </div>
-                </div>
+                <FormField
+                  label="Password"
+                  errors={errors}
+                  register={register}
+                  registerName="password"
+                  inputType="password"
+                />
 
                 {/* Submit Button */}
                 <div className="form-control mt-2">

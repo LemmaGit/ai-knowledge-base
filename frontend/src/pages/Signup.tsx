@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useSignup } from "../hooks/useAuth";
 import Layout from "../components/Layout";
+import FormField from "../components/Field";
 
 const signupSchema = z
   .object({
@@ -30,10 +31,8 @@ const Signup = () => {
   });
 
   const onSubmit = (data: SignupFormData) => {
-    delete data["confirmPassword"];
-    // const { confirmPassword, ...signupData } = data;
-    // signup.mutate(signupData);
-    signup.mutate(data);
+    const { confirmPassword: _, ...signupData } = data;
+    signup.mutate(signupData);
   };
 
   return (
@@ -55,98 +54,40 @@ const Signup = () => {
             <div className="card-body p-8">
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 {/* Name Field */}
-                <div className="form-control space-y-1">
-                  <label className="label">
-                    <span className="label-text font-semibold">Full Name</span>
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Enter your full name"
-                    className={`input input-bordered input-md ${
-                      errors.name ? "input-error" : "focus:input-primary"
-                    }`}
-                    {...register("name")}
-                  />
-                  {errors.name && (
-                    <label className="label">
-                      <span className="label-text-alt text-error font-medium">
-                        {errors.name.message}
-                      </span>
-                    </label>
-                  )}
-                </div>
+                <FormField
+                  label="Full Name"
+                  errors={errors}
+                  register={register}
+                  registerName="name"
+                  inputType="text"
+                />
 
                 {/* Email Field */}
-                <div className="form-control space-y-1">
-                  <label className="label">
-                    <span className="label-text font-semibold">
-                      Email Address
-                    </span>
-                  </label>
-                  <input
-                    type="email"
-                    placeholder="your.email@example.com"
-                    className={`input input-bordered input-md ${
-                      errors.email ? "input-error" : "focus:input-primary"
-                    }`}
-                    {...register("email")}
-                  />
-                  {errors.email && (
-                    <label className="label">
-                      <span className="label-text-alt text-error font-medium">
-                        {errors.email.message}
-                      </span>
-                    </label>
-                  )}
-                </div>
+                <FormField
+                  label="Email Address"
+                  errors={errors}
+                  register={register}
+                  registerName="email"
+                  inputType="email"
+                />
 
                 {/* Password Field */}
-                <div className="form-control space-y-1">
-                  <label className="label mt-1">
-                    <span className="label-text font-semibold">Password</span>
-                  </label>
-                  <input
-                    type="password"
-                    placeholder="Create a strong password"
-                    className={`input input-bordered input-md ${
-                      errors.password ? "input-error" : "focus:input-primary"
-                    }`}
-                    {...register("password")}
-                  />
-                  {errors.password && (
-                    <label className="label">
-                      <span className="label-text-alt text-error font-medium">
-                        {errors.password.message}
-                      </span>
-                    </label>
-                  )}
-                </div>
+                <FormField
+                  label="Password"
+                  errors={errors}
+                  register={register}
+                  registerName="password"
+                  inputType="password"
+                />
 
                 {/* Confirm Password Field */}
-                <div className="form-control space-y-1">
-                  <label className="label mt-1">
-                    <span className="label-text font-semibold">
-                      Confirm Password
-                    </span>
-                  </label>
-                  <input
-                    type="password"
-                    placeholder="Re-enter your password"
-                    className={`input input-bordered input-md ${
-                      errors.confirmPassword
-                        ? "input-error"
-                        : "focus:input-primary"
-                    }`}
-                    {...register("confirmPassword")}
-                  />
-                  {errors.confirmPassword && (
-                    <label className="label">
-                      <span className="label-text-alt text-error font-medium">
-                        {errors.confirmPassword.message}
-                      </span>
-                    </label>
-                  )}
-                </div>
+                <FormField
+                  label="Confirm Password"
+                  errors={errors}
+                  register={register}
+                  registerName="confirmPassword"
+                  inputType="password"
+                />
 
                 {/* Submit Button */}
                 <div className="form-control mt-2">
