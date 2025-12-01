@@ -33,16 +33,6 @@ const signup = async (data) => {
   return user;
 };
 
-const verifyEmail = async (query) => {
-  //TODO: Do I need to add a response where the required fields are not found or not
-  const { email, token } = query;
-  const user = await User.findOne({ email, verificationToken: token });
-  user.isVerified = true;
-  user.verificationToken = undefined;
-  await user.save();
-  return user;
-};
-
 const login = async (userCredentials) => {
   const { email, password } = userCredentials;
   const user = await getUserByEmail(email);
@@ -51,6 +41,19 @@ const login = async (userCredentials) => {
   const tokens = await tokenService.generateAuthTokens(user._id);
 
   return { user, isMatch, tokens };
+};
+
+const confirmSuccessfulSignup = async (token, email) => {
+  try {
+    const user = await User.findOne({ email, verificationToken: token });
+    if (!user) return null;
+    user.isVerified = true;
+    user.verificationToken = undefined;
+    await user.save();
+    return user;
+  } catch (err) {
+    throw new Error(err.message);
+  }
 };
 
 const refreshAuthToken = async (refreshToken) => {
@@ -70,7 +73,7 @@ const refreshAuthToken = async (refreshToken) => {
 
 module.exports = {
   signup,
-  verifyEmail,
+  confirmSuccessfulSignup,
   login,
   refreshAuthToken,
   getUserByEmail,

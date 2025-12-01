@@ -9,7 +9,7 @@ const createArticleSchema = {
       .optional(),
     content: joi.string().required(),
     summary: joi.string().optional(),
-    description: joi.string().required(),
+    // description: joi.string().required(),
     tags: joi.array().items(joi.string()).optional(),
     likes: joi.number().default(0),
   }),

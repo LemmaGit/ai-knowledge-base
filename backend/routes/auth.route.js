@@ -14,7 +14,7 @@ router.post(
   validate(authValidation.loginSchema),
   authController.login
 );
-router.get("/verify-email", authController.verifyEmail);
+router.get("/verify-email", authController.confirmSignup);
 router.post(
   "/auth/refresh-token",
   validate(authValidation.refreshTokenSchema),

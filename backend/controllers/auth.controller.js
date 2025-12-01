@@ -40,6 +40,31 @@ const login = catchAsync(async (req, res) => {
   res.status(status.OK).json({ user, tokens });
 });
 
+const confirmSignup = catchAsync(async (req, res) => {
+  const { token, email } = req.query;
+  const user = await authService.confirmSuccessfulSignup(token, email);
+  if (!user)
+    return res.status(status.NOT_FOUND).render("error.pug", {
+      message: "User not found",
+      helpText: "The account associated with this link doesn't exist.",
+    });
+
+  res.send(`
+        <html>
+          <head>
+            <title>Email Verified</title>
+            <meta http-equiv="refresh" content="0; url=${process.env.FRONTEND_URL}/login" />
+          </head>
+          <body>
+            <p>Email successfully verified. Redirecting...</p>
+            <script>
+              window.location.href = "${process.env.FRONTEND_URL}/login";
+            </script>
+          </body>
+        </html>
+      `);
+});
+
 const refreshAuthToken = catchAsync(async (req, res) => {
   const tokens = await authService.refreshAuthToken(req.body.refreshToken);
   res.status(httpStatus.OK).send({ ...tokens });
@@ -47,6 +72,7 @@ const refreshAuthToken = catchAsync(async (req, res) => {
 
 module.exports = {
   signup,
+  confirmSignup,
   login,
   verifyEmail,
   refreshAuthToken,

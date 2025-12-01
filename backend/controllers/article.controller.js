@@ -1,10 +1,13 @@
 const { status } = require("http-status");
 const catchAsync = require("./../utils/catchAsync");
 const { articleService } = require("./../services");
+const { extractArticleData } = require("../utils/openAI");
 
 const createArticle = catchAsync(async (req, res) => {
+  const openAIRes = await extractArticleData(req.body.content);
   const article = await articleService.createArticle({
     ...req.body,
+    ...openAIRes,
     author: req.user.id,
   });
   res.status(status.CREATED).json(article);
@@ -32,9 +35,7 @@ const updateArticle = catchAsync(async (req, res) => {
 const deleteArticle = catchAsync(async (req, res) => {
   const article = await articleService.deleteArticle(req.params.id);
   if (!article)
-    return res
-      .status(status.NOT_FOUND)
-      .json({ error: "Article not found" });
+    return res.status(status.NOT_FOUND).json({ error: "Article not found" });
   res.status(status.OK).json({ message: "Article deleted" });
 });
 
